@@ -27,7 +27,6 @@ public:
 			std::cout << "RECEIVED SENSOR DELTA DATA"   << std::endl;
 			std::cout << "============================="   << std::endl;
 			std::cout << "ts: "          << msg->timestamp    << std::endl;
-			std::cout << "last_ts: "     << msg->last_update_usec    << std::endl;
 			std::cout << "delta_angle[0]: " << msg->delta_angle[0]  << std::endl;
 			std::cout << "delta_angle[1]: " << msg->delta_angle[1]  << std::endl;
 			std::cout << "delta_angle[2]: " << msg->delta_angle[2]  << std::endl;
