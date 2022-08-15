@@ -17,3 +17,7 @@ rtps:
     send: true
   - msg: SensorDistance
     send: true
+  - msg: VehicleAttitude
+    send: true
+  - msg: LocalPosition
+    send: true

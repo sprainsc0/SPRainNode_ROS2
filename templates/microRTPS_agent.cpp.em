@@ -52,7 +52,7 @@ recv_topics = [(alias[idx] if alias[idx] else s.short_name) for idx, s in enumer
 #define MAX_SLEEP_US      1000000
 #define BAUDRATE          3000000
 #define MAX_DATA_RATE     10000000
-#define DEVICE            "/dev/ttyTHS0"
+#define DEVICE            "/dev/ttyTHS1"
 #define POLL_MS           1
 #define MAX_POLL_MS       1000
 #define DEFAULT_RECV_PORT 2020
@@ -261,6 +261,12 @@ int main(int argc, char **argv)
 	printf("[   micrortps_agent   ]\tStarting link...\n");
 
 	const char* localhost_only = std::getenv("ROS_LOCALHOST_ONLY");
+	const char* rmw_implementation = std::getenv("RMW_IMPLEMENTATION");
+	const char* ros_distro = std::getenv("ROS_DISTRO");
+
+	
+	printf("[   micrortps_agent   ]\tRmw implementation:%s\n", rmw_implementation);
+	printf("[   micrortps_agent   ]\tRos_distro:%s\n", ros_distro);
 
 	if (localhost_only && strcmp(localhost_only, "1") == 0) {
 		printf("[   micrortps_agent   ]\tUsing only the localhost network...\n");
