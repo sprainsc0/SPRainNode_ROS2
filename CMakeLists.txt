@@ -4,6 +4,8 @@ project(sprain_ros_com)
 
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+set(CMAKE_BUILD_TYPE Release)
+
 include(EnableC++XX)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
