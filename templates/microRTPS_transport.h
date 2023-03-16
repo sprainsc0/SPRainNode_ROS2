@@ -125,3 +125,28 @@ protected:
 	struct sockaddr_in _receiver_inaddr;
 	struct sockaddr_in _receiver_outaddr;
 };
+
+class PIPE_node: public Transport_node
+{
+public:
+	PIPE_node(const char *pipe_ros, const char *pipe_fcu, const uint32_t poll_ms,
+		 const uint8_t sys_id, const bool debug);
+	virtual ~PIPE_node();
+
+	int init();
+	uint8_t close();
+
+protected:
+	ssize_t node_read(void *buffer, size_t len);
+	ssize_t node_write(void *buffer, size_t len);
+	bool fds_OK();
+
+	int _to_ros_fd;
+	int _to_fcu_fd;
+	uint32_t _poll_ms;
+
+	char _pipe_ros_name[64]{};
+	char _pipe_fcu_name[64]{};
+	
+	struct pollfd _poll_fd[1]{};
+};

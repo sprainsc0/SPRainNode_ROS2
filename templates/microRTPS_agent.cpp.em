@@ -53,6 +53,8 @@ recv_topics = [(alias[idx] if alias[idx] else s.short_name) for idx, s in enumer
 #define BAUDRATE          3000000
 #define MAX_DATA_RATE     10000000
 #define DEVICE            "/dev/ttyTHS1"
+#define PIPE_ROS          "pipe2ros"
+#define PIPE_FCU          "pipe2fcu"
 #define POLL_MS           1
 #define MAX_POLL_MS       1000
 #define DEFAULT_RECV_PORT 2020
@@ -70,9 +72,12 @@ uint32_t total_sent = 0, sent = 0;
 struct options {
 	enum class eTransports {
 		UART,
-		UDP
+		UDP,
+		PIPE
 	};
-	eTransports transport = options::eTransports::UART;
+	eTransports transport = options::eTransports::PIPE;
+	char pipe_ros[64] = PIPE_ROS;
+	char pipe_fcu[64] = PIPE_FCU;
 	char device[64] = DEVICE;
 	int sleep_us = SLEEP_US;
 	uint32_t baudrate = BAUDRATE;
@@ -91,6 +96,8 @@ static void usage(const char *name)
 	printf("usage: %s [options]\n\n"
 	       "  -b <baudrate>           UART device baudrate. Defaults to 460800\n"
 	       "  -d <device>             UART device. Defaults to /dev/ttyACM0\n"
+		   "  -c <pipe>               PIPE name to ROS2
+		   "  -u <pipe>               PIPE name to FCU
 	       "  -f <sw-flow-control>    Activates UART link SW flow control\n"
 	       "  -g <hw-flow-control>    Activates UART link HW flow control\n"
 	       "  -i <ip-address>         Target remote IP address for UDP. Defaults to 127.0.0.1\n"
@@ -111,6 +118,8 @@ static void usage(const char *name)
 static int parse_options(int argc, char **argv)
 {
 	static const struct option options[] = {
+		{"pipe_ros", required_argument, NULL, 'c'},
+		{"pipe_fcu", required_argument, NULL, 'u'},
 		{"baudrate", required_argument, NULL, 'b'},
 		{"device", required_argument, NULL, 'd'},
 		{"sw-flow-control", no_argument, NULL, 'f'},
@@ -131,9 +140,19 @@ static int parse_options(int argc, char **argv)
 
 	while ((ch = getopt_long(argc, argv, "t:d:w:b:o:r:s:i:fghvn:", options, nullptr)) >= 0) {
 		switch (ch) {
-		case 't': _options.transport      = strcmp(optarg, "UDP") == 0 ?
-                                                  options::eTransports::UDP
-                                                  : options::eTransports::UART;    break;
+		case 't': 
+			if(strcmp(optarg, "UDP") == 0) {
+				_options.transport = options::eTransports::UDP;
+			} else if(strcmp(optarg, "PIPE") == 0) {
+				_options.transport = options::eTransports::PIPE;
+			} else {
+				_options.transport = options::eTransports::UART;
+			}
+		break;
+
+		case 'c': if (nullptr != optarg) strcpy(_options.pipe_ros, optarg); break;
+
+		case 'u': if (nullptr != optarg) strcpy(_options.pipe_fcu, optarg); break;
 
 		case 'd': if (nullptr != optarg) strcpy(_options.device, optarg);   break;
 
@@ -296,6 +315,14 @@ int main(int argc, char **argv)
                                                                    sys_id, _options.verbose_debug);
 			printf("[   micrortps_agent   ]\tUDP transport: ip address: %s; recv port: %u; send port: %u\n",
 			       _options.ip, _options.recv_port, _options.send_port);
+		}
+		break;
+	
+	case options::eTransports::PIPE: {
+			transport_node = std::make_unique<PIPE_node>(_options.pipe_ros, _options.pipe_fcu, _options.poll_ms,
+						       sys_id, _options.verbose_debug);
+			printf("[   micrortps_agent   ]\tPIPE transport: pipe_ros: %s; pipe_fcu: %s; poll: %dms; \n",
+			       _options.pipe_ros, _options.pipe_fcu, _options.poll_ms);
 		}
 		break;
 

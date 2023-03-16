@@ -681,3 +681,138 @@ ssize_t UDP_node::node_write(void *buffer, size_t len)
 	ret = sendto(_sender_fd, buffer, len, 0, (struct sockaddr *)&_sender_outaddr, sizeof(_sender_outaddr));
 	return ret;
 }
+
+
+PIPE_node::PIPE_node(const char *pipe_ros, const char *pipe_fcu, const uint32_t poll_ms,
+		 const uint8_t sys_id, const bool debug):
+	Transport_node(sys_id, debug),
+	_to_ros_fd(-1),
+	_to_fcu_fd(-1),
+	_poll_ms(poll_ms)
+{
+
+	if (nullptr != pipe_ros) {
+		strcpy(_pipe_ros_name, pipe_ros);
+	}
+
+	if (nullptr != pipe_fcu) {
+		strcpy(_pipe_fcu_name, pipe_fcu);
+	}
+}
+
+PIPE_node::~PIPE_node()
+{
+	close();
+}
+
+int PIPE_node::init()
+{
+	if(-1 == access(_pipe_ros_name, F_OK)) {
+        int ret = mkfifo(_pipe_ros_name,0664);
+        if(ret == -1) {
+            printf("\033[1;33m[ micrortps_transport ]\tPIPE transport: pipe %s mkfifo error %d \033[0m\n", _pipe_ros_name, ret);
+            return -1;
+        }
+    }
+
+	if(-1 == access(_pipe_fcu_name, F_OK)) {
+        int ret = mkfifo(_pipe_fcu_name,0664);
+        if(ret == -1) {
+            printf("\033[1;33m[ micrortps_transport ]\tPIPE transport: pipe %s mkfifo error %d \033[0m\n", _pipe_fcu_name, ret);
+            return -1;
+        }
+    }
+
+	// Open a pipe port
+	_to_fcu_fd = open(_pipe_fcu_name, O_WRONLY);
+	if (_to_fcu_fd < 0) {
+
+		printf("\033[0;31m[ micrortps_transport ]\tPIPE transport: Failed to open pipe: %s (%d)\033[0m\n", _pipe_fcu_name, errno);
+		return -errno;
+	}
+
+	_to_ros_fd = open(_pipe_ros_name, O_RDONLY | O_NONBLOCK);
+	if (_to_ros_fd < 0) {
+
+		printf("\033[0;31m[ micrortps_transport ]\tPIPE transport: Failed to open pipe: %s (%d)\033[0m\n", _pipe_ros_name, errno);
+		return -errno;
+	}
+
+	char aux[64];
+	bool flush = false;
+
+	while (0 < ::read(_to_ros_fd, (void *)&aux, 64)) {
+		flush = true;
+
+		usleep(1000);
+
+	}
+
+	if (flush) {
+
+		if (_debug) { printf("[ micrortps_transport ]\tPIPE transport: Flush\n"); }
+
+
+	} else {
+
+		if (_debug) { printf("[ micrortps_transport ]\tPIPE transport: No flush\n"); }
+
+	}
+
+	_poll_fd[0].fd = _to_ros_fd;
+	_poll_fd[0].events = POLLIN;
+
+	return _to_ros_fd;
+}
+
+bool PIPE_node::fds_OK()
+{
+	return (-1 != _to_ros_fd) && (-1 != _to_fcu_fd);
+}
+
+uint8_t PIPE_node::close()
+{
+	if (-1 != _to_ros_fd) {
+
+		printf("\033[1;33m[ micrortps_transport ]\tClosed recv pipe.\n\033[0m");
+
+		::close(_to_ros_fd);
+		_to_ros_fd = -1;
+		memset(&_poll_fd, 0, sizeof(_poll_fd));
+	}
+
+	if (-1 != _to_fcu_fd) {
+
+		printf("\033[1;33m[ micrortps_transport ]\tClosed send pipe.\n\033[0m");
+
+		::close(_to_fcu_fd);
+		_to_fcu_fd = -1;
+	}
+
+	return 0;
+}
+
+ssize_t PIPE_node::node_read(void *buffer, size_t len)
+{
+	if (nullptr == buffer || !fds_OK()) {
+		return -1;
+	}
+
+	ssize_t ret = 0;
+	int r = poll(_poll_fd, 1, _poll_ms);
+
+	if (r == 1 && (_poll_fd[0].revents & POLLIN)) {
+		ret = ::read(_to_ros_fd, buffer, len);
+	}
+
+	return ret;
+}
+
+ssize_t PIPE_node::node_write(void *buffer, size_t len)
+{
+	if (nullptr == buffer || !fds_OK()) {
+		return -1;
+	}
+
+	return ::write(_to_fcu_fd, buffer, len);
+}
