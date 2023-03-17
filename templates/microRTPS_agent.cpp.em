@@ -48,14 +48,14 @@ recv_topics = [(alias[idx] if alias[idx] else s.short_name) for idx, s in enumer
 @[end if]@
 
 // Default values
-#define SLEEP_US          1
+#define SLEEP_US          2000
 #define MAX_SLEEP_US      1000000
 #define BAUDRATE          3000000
 #define MAX_DATA_RATE     10000000
 #define DEVICE            "/dev/ttyTHS1"
-#define PIPE_ROS          "pipe2ros"
-#define PIPE_FCU          "pipe2fcu"
-#define POLL_MS           1
+#define PIPE_ROS          "/tmp/pipe2ros"
+#define PIPE_FCU          "/tmp/pipe2fcu"
+#define POLL_MS           10
 #define MAX_POLL_MS       1000
 #define DEFAULT_RECV_PORT 2020
 #define DEFAULT_SEND_PORT 2019
@@ -96,8 +96,8 @@ static void usage(const char *name)
 	printf("usage: %s [options]\n\n"
 	       "  -b <baudrate>           UART device baudrate. Defaults to 460800\n"
 	       "  -d <device>             UART device. Defaults to /dev/ttyACM0\n"
-		   "  -c <pipe>               PIPE name to ROS2
-		   "  -u <pipe>               PIPE name to FCU
+		   "  -c <pipe>               PIPE name to ROS2\n"
+		   "  -u <pipe>               PIPE name to FCU\n"
 	       "  -f <sw-flow-control>    Activates UART link SW flow control\n"
 	       "  -g <hw-flow-control>    Activates UART link HW flow control\n"
 	       "  -i <ip-address>         Target remote IP address for UDP. Defaults to 127.0.0.1\n"

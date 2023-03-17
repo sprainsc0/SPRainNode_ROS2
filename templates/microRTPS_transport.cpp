@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <inttypes.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #if defined(__linux__)
 #include <linux/serial.h>
@@ -708,7 +710,7 @@ PIPE_node::~PIPE_node()
 int PIPE_node::init()
 {
 	if(-1 == access(_pipe_ros_name, F_OK)) {
-        int ret = mkfifo(_pipe_ros_name,0664);
+        int ret = mkfifo(_pipe_ros_name,0777);
         if(ret == -1) {
             printf("\033[1;33m[ micrortps_transport ]\tPIPE transport: pipe %s mkfifo error %d \033[0m\n", _pipe_ros_name, ret);
             return -1;
@@ -716,7 +718,7 @@ int PIPE_node::init()
     }
 
 	if(-1 == access(_pipe_fcu_name, F_OK)) {
-        int ret = mkfifo(_pipe_fcu_name,0664);
+        int ret = mkfifo(_pipe_fcu_name,0777);
         if(ret == -1) {
             printf("\033[1;33m[ micrortps_transport ]\tPIPE transport: pipe %s mkfifo error %d \033[0m\n", _pipe_fcu_name, ret);
             return -1;
@@ -736,27 +738,6 @@ int PIPE_node::init()
 
 		printf("\033[0;31m[ micrortps_transport ]\tPIPE transport: Failed to open pipe: %s (%d)\033[0m\n", _pipe_ros_name, errno);
 		return -errno;
-	}
-
-	char aux[64];
-	bool flush = false;
-
-	while (0 < ::read(_to_ros_fd, (void *)&aux, 64)) {
-		flush = true;
-
-		usleep(1000);
-
-	}
-
-	if (flush) {
-
-		if (_debug) { printf("[ micrortps_transport ]\tPIPE transport: Flush\n"); }
-
-
-	} else {
-
-		if (_debug) { printf("[ micrortps_transport ]\tPIPE transport: No flush\n"); }
-
 	}
 
 	_poll_fd[0].fd = _to_ros_fd;

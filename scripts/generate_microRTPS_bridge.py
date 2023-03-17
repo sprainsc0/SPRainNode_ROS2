@@ -168,7 +168,7 @@ if ros_version == '2':
         ros2_distro = os.environ.get('ROS_DISTRO')
 
 # get FastRTPS version
-fastrtps_version = '2.1.0'
+fastrtps_version = '1.8.0'
 # if not ros2_distro:
 #     # grab the version installed system wise
 #     fastrtps_version = subprocess.check_output(
