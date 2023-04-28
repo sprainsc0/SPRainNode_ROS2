@@ -45,6 +45,7 @@ find_package(rclcpp REQUIRED)
 get_default_rmw_implementation(rmw_implementation)
 find_package("${rmw_implementation}" REQUIRED)
 
+find_package(nav_msgs REQUIRED)
 find_package(sprain_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -74,6 +75,7 @@ function(custom_executable subfolder target)
   ament_target_dependencies(${target}
     rclcpp
     sprain_msgs
+    sensor_msgs
   )
   install(TARGETS ${target}
   DESTINATION lib/${PROJECT_NAME})
@@ -92,7 +94,7 @@ target_link_libraries(frame_transforms Eigen3::Eigen ${geometry_msgs_LIBRARIES} 
 # Add microRTPS agent
 add_executable(micrortps_agent ${MICRORTPS_AGENT_FILES})
 ament_target_dependencies(micrortps_agent fastcdr fastrtps rclcpp)
-target_link_libraries(micrortps_agent fastcdr fastrtps ${rclcpp_LIBRARIES})
+target_link_libraries(micrortps_agent fastcdr fastrtps ${rclcpp_LIBRARIES} ${sensor_msgs_LIBRARIES})
 
 # Add examples
 custom_executable(examples/listeners sensor_delta_listener)

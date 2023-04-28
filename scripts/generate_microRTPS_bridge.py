@@ -303,6 +303,7 @@ def generate_agent(out_dir):
                                                         urtps_templates_dir, package, generate_uorb_topic_files.INCL_DEFAULT, classifier.msg_list, fastrtps_version, ros2_distro, uRTPS_TIMESYNC_CPP_TEMPL_FILE)
     generate_uorb_topic_files.generate_uRTPS_general(classifier.msgs_to_send, classifier.alias_msgs_to_send, classifier.msgs_to_receive, classifier.alias_msgs_to_receive, msg_dir, out_dir,
                                                         urtps_templates_dir, package, generate_uorb_topic_files.INCL_DEFAULT, classifier.msg_list, fastrtps_version, ros2_distro, uRTPS_TIMESYNC_H_TEMPL_FILE)
+
     generate_uorb_topic_files.generate_uRTPS_general(classifier.msgs_to_send, classifier.alias_msgs_to_send, classifier.msgs_to_receive, classifier.alias_msgs_to_receive, msg_dir, out_dir,
                                                         urtps_templates_dir, package, generate_uorb_topic_files.INCL_DEFAULT, classifier.msg_list, fastrtps_version, ros2_distro, uRTPS_AGENT_TOPICS_H_TEMPL_FILE)
     generate_uorb_topic_files.generate_uRTPS_general(classifier.msgs_to_send, classifier.alias_msgs_to_send, classifier.msgs_to_receive, classifier.alias_msgs_to_receive, msg_dir, out_dir,
@@ -349,6 +350,8 @@ def generate_agent(out_dir):
         shutil.rmtree(os.path.join(out_dir, "fastrtpsgen"))
     cp_wildcard(os.path.join(urtps_templates_dir,
                              "microRTPS_transport.*"), agent_out_dir)
+    cp_wildcard(os.path.join(urtps_templates_dir,
+                             "transform_imu.*"), agent_out_dir)
     if cmakelists:
         os.rename(os.path.join(os.path.dirname(out_dir), "microRTPS_agent_CMakeLists.txt"),
                   os.path.join(os.path.dirname(out_dir), "CMakeLists.txt"))
