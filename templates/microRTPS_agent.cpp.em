@@ -56,7 +56,7 @@ recv_topics = [(alias[idx] if alias[idx] else s.short_name) for idx, s in enumer
 #define DEVICE            "/dev/ttyTHS1"
 #define PIPE_ROS          "/tmp/pipe2ros"
 #define PIPE_FCU          "/tmp/pipe2fcu"
-#define POLL_MS           10
+#define POLL_MS           3
 #define MAX_POLL_MS       1000
 #define DEFAULT_RECV_PORT 2020
 #define DEFAULT_SEND_PORT 2019
