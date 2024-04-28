@@ -142,7 +142,7 @@ static int parse_options(int argc, char **argv)
 
 	int ch;
 
-	while ((ch = getopt_long(argc, argv, "t:d:w:b:o:r:s:i:fghvn:", options, nullptr)) >= 0) {
+	while ((ch = getopt_long(argc, argv, "t:d:w:b:o:r:s:i:fghvmn:", options, nullptr)) >= 0) {
 		switch (ch) {
 		case 't': 
 			if(strcmp(optarg, "UDP") == 0) {
