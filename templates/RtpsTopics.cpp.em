@@ -59,8 +59,10 @@ bool RtpsTopics::init(std::condition_variable *t_send_queue_cv, std::mutex *t_se
 	if (_@(topic)_pub.init(ns)) {
 		if(_transform != nullptr) {
 			_transform->start();
+			std::cout << "- @(topic) converter started" << std::endl;
+		} else {
+			std::cout << "- @(topic) publisher started" << std::endl;
 		}
-		std::cout << "- @(topic) publisher started" << std::endl;
 @[    else]@
 	if (_@(topic)_pub.init(ns)) {
 		std::cout << "- @(topic) publisher started" << std::endl;

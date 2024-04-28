@@ -43,6 +43,8 @@ void Transform_Imu::publish(SensorDelta_msg_t *st)
 
 	imu_msg.header.stamp = timestamp;
 
+	imu_msg.header.frame_id = "imu_data";
+
 	double gyro_x = st->delta_angle()[0];
 	double gyro_y = st->delta_angle()[1];
 	double gyro_z = st->delta_angle()[2];

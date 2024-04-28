@@ -46,7 +46,7 @@ except ImportError as e:
 __author__ = "Lavi Liu"
 __copyright__ = "Copyright (C) 2013-2016 SPRain Development Team."
 __license__ = "BSD"
-__email__ = "thomasgubler@gmail.com"
+__email__ = "sprainsc0@gmail.com"
 
 
 TEMPLATE_FILE = ['msg.h.em', 'msg.cpp.em']

@@ -111,6 +111,8 @@ public:
 	 */
 	void stop();
 
+	bool convergent() const { return _convergent; }
+
 @[if ros2_distro]@
 	/**
 	 * @@brief Get ROS time in nanoseconds. This will match the system time, which
@@ -208,6 +210,7 @@ private:
 	uint8_t _last_remote_msg_seq;
 
 	bool _debug;
+	bool _convergent{false};
 
 	std::unique_ptr<std::thread> _send_timesync_thread;
 	std::unique_ptr<std::thread> _send_timesync_status_thread;
