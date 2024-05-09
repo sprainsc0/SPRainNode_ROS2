@@ -37,3 +37,5 @@ rtps:
     send: true
   - msg: HomePosition
     send: true
+  - msg: SensorImu
+    send: true

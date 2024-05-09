@@ -14,9 +14,9 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include <sensor_msgs/msg/imu.hpp>
-#include "SensorDelta_Publisher.h"
+#include "SensorImu_Publisher.h"
 
-using SensorDelta_msg_t = sprain_msgs::msg::SensorDelta;
+using SensorImu_msg_t = sprain_msgs::msg::SensorImu;
 using Imu_msg_t = sensor_msgs::msg::Imu;
 
 class Transform_Imu
@@ -28,7 +28,7 @@ public:
 	void start();
 	void stop();
 
-	void publish(SensorDelta_msg_t *st);
+	void publish(SensorImu_msg_t *st);
 private:
 	std::shared_ptr<rclcpp::Node>  _transform_node;
 

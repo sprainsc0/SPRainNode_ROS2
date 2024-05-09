@@ -55,7 +55,7 @@ bool RtpsTopics::init(std::condition_variable *t_send_queue_cv, std::mutex *t_se
 	if (_@(topic)_pub.init(ns, std::string("timesync_status"))) {
 		_timesync->init_status_pub(&_@(topic)_pub);
 		std::cout << "- @(topic) publisher started" << std::endl;
-@[    elif topic == 'SensorDelta' or topic == 'sensor_delta']@
+@[    elif topic == 'SensorImu' or topic == 'sensor_imu']@
 	if (_@(topic)_pub.init(ns)) {
 		if(_transform != nullptr) {
 			_transform->start();
