@@ -3,39 +3,43 @@
 # Topics ID is start from 1, for example Timesync id is 1
 rtps:
   - msg: Timesync
+    id: 1
     receive: true
     send: true
   - msg: SensorDelta
-    send: true
-  - msg: SensorVio
-    receive: true
-  - msg: TimesyncStatus
-    send: true
-  - msg: GpsPretreat
-    send: true
-  - msg: SensorMag
-    send: true
-  - msg: SensorBaro
-    send: true
-  - msg: SensorDistance
-    send: true
-  - msg: VehicleAttitude
-    send: true
-  - msg: LocalPosition
-    send: true
-  - msg: InputRc
-    receive: true
-  - msg: Mission
-    receive: true
-  - msg: VehicleCommand
-    receive: true
-  - msg: ActuatorArmed
-    send: true
-  - msg: MissionResult
-    send: true
-  - msg: VehicleCommandAck
-    send: true
-  - msg: HomePosition
+    id: 2
     send: true
   - msg: SensorImu
+    id: 3
     send: true
+  - msg: SensorVio
+    id: 4
+    receive: true
+  - msg: TimesyncStatus
+    id: 5
+    send: true
+  - msg: GpsPretreat
+    id: 6
+    send: true
+  - msg: SensorMag
+    id: 7
+    send: true
+  - msg: VehicleAttitude
+    id: 8
+    send: true
+  - msg: LocalPosition
+    id: 9
+    send: true
+  - msg: VehicleCommand
+    id: 10
+    receive: true
+  - msg: ActuatorArmed
+    id: 11
+    send: true
+  - msg: VehicleCommandAck
+    id: 12
+    send: true
+  - msg: HomePosition
+    id: 13
+    send: true
+  
