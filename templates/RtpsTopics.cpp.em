@@ -107,7 +107,7 @@ void RtpsTopics::publish(const uint8_t topic_ID, char data_buffer[], size_t len)
 		// apply timestamp offset
 		sync_timestamp_of_incoming_data(st);
 
-@[    if topic == 'SensorDelta' or topic == 'sensor_delta']@
+@[    if topic == 'SensorImu' or topic == 'sensor_imu']@
 		if(_transform != nullptr) {
 			_transform->publish(&st);
 		} else {
