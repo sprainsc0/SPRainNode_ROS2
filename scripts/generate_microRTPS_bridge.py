@@ -349,8 +349,6 @@ def generate_agent(out_dir):
         shutil.rmtree(os.path.join(out_dir, "fastrtpsgen"))
     cp_wildcard(os.path.join(urtps_templates_dir,
                              "microRTPS_transport.*"), agent_out_dir)
-    cp_wildcard(os.path.join(urtps_templates_dir,
-                             "transform_imu.*"), agent_out_dir)
     if cmakelists:
         os.rename(os.path.join(os.path.dirname(out_dir), "microRTPS_agent_CMakeLists.txt"),
                   os.path.join(os.path.dirname(out_dir), "CMakeLists.txt"))

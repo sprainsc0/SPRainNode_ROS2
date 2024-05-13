@@ -21,13 +21,9 @@ rtps:
     send: true
   - msg: LocalPosition
     send: true
-  - msg: Mission
-    receive: true
   - msg: VehicleCommand
     receive: true
   - msg: ActuatorArmed
-    send: true
-  - msg: MissionResult
     send: true
   - msg: VehicleCommandAck
     send: true
