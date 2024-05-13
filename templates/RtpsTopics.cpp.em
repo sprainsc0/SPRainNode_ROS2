@@ -55,14 +55,6 @@ bool RtpsTopics::init(std::condition_variable *t_send_queue_cv, std::mutex *t_se
 	if (_@(topic)_pub.init(ns, std::string("timesync_status"))) {
 		_timesync->init_status_pub(&_@(topic)_pub);
 		std::cout << "- @(topic) publisher started" << std::endl;
-@[    elif topic == 'SensorImu' or topic == 'sensor_imu']@
-	if (_@(topic)_pub.init(ns)) {
-		if(_transform != nullptr) {
-			_transform->start();
-			std::cout << "- @(topic) converter started" << std::endl;
-		} else {
-			std::cout << "- @(topic) publisher started" << std::endl;
-		}
 @[    else]@
 	if (_@(topic)_pub.init(ns)) {
 		std::cout << "- @(topic) publisher started" << std::endl;
@@ -107,15 +99,7 @@ void RtpsTopics::publish(const uint8_t topic_ID, char data_buffer[], size_t len)
 		// apply timestamp offset
 		sync_timestamp_of_incoming_data(st);
 
-@[    if topic == 'SensorDelta' or topic == 'sensor_delta']@
-		if(_transform != nullptr) {
-			_transform->publish(&st);
-		} else {
-			_@(topic)_pub.publish(&st);
-		}
-@[    else]@
 		_@(topic)_pub.publish(&st);
-@[    end if]@
 	}
 	break;
 @[end for]@

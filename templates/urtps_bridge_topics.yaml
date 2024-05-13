@@ -7,6 +7,8 @@ rtps:
     send: true
   - msg: SensorDelta
     send: true
+  - msg: SensorImu
+    send: true
   - msg: SensorVio
     receive: true
   - msg: TimesyncStatus
@@ -15,16 +17,10 @@ rtps:
     send: true
   - msg: SensorMag
     send: true
-  - msg: SensorBaro
-    send: true
-  - msg: SensorDistance
-    send: true
   - msg: VehicleAttitude
     send: true
   - msg: LocalPosition
     send: true
-  - msg: InputRc
-    receive: true
   - msg: Mission
     receive: true
   - msg: VehicleCommand
@@ -37,5 +33,4 @@ rtps:
     send: true
   - msg: HomePosition
     send: true
-  - msg: SensorImu
-    send: true
+  

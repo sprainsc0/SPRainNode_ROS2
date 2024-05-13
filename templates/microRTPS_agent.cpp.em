@@ -41,7 +41,6 @@ recv_topics = [(alias[idx] if alias[idx] else s.short_name) for idx, s in enumer
 
 #include "microRTPS_transport.h"
 #include "microRTPS_timesync.h"
-#include "transform_imu.h"
 #include "RtpsTopics.h"
 
 @[if ros2_distro]@
@@ -89,7 +88,6 @@ struct options {
 	bool sw_flow_control = false;
 	bool hw_flow_control = false;
 	bool verbose_debug = false;
-	bool transform_imu = false;
 	std::string ns = "";
 } _options;
 
@@ -109,7 +107,6 @@ static void usage(const char *name)
 	       "  -s <sending-port>       UDP port for sending (remote). Defaults to 2019\n"
 	       "  -t <transport>          [UART|UDP] Defaults to UART\n"
 	       "  -v <increase-verbosity> Add more verbosity\n"
-		   "  -m <transform-to-imu>   Transform to native Imu message\n"
 	       "  -w <sleep-time-us>      Iteration time for data publishing to the DDS world, in microseconds.\n"
 	       "                           Defaults to 1us\n"
 	       "     <ros-args>           (ROS2 only) Allows to pass arguments to the timesync ROS2 node.\n"
@@ -134,7 +131,6 @@ static int parse_options(int argc, char **argv)
 		{"sending-port", required_argument, NULL, 's'},
 		{"transport", required_argument, NULL, 't'},
 		{"increase-verbosity", no_argument, NULL, 'v'},
-		{"transform-to-imu", required_argument, NULL, 'm'},
 		{"sleep-time-us", required_argument, NULL, 'w'},
 		{"ros-args", required_argument, NULL, 0},
 		{"help", no_argument, NULL, 'h'},
@@ -142,7 +138,7 @@ static int parse_options(int argc, char **argv)
 
 	int ch;
 
-	while ((ch = getopt_long(argc, argv, "t:d:w:b:o:r:s:i:fghvmn:", options, nullptr)) >= 0) {
+	while ((ch = getopt_long(argc, argv, "t:d:w:b:o:r:s:i:fghvn:", options, nullptr)) >= 0) {
 		switch (ch) {
 		case 't': 
 			if(strcmp(optarg, "UDP") == 0) {
@@ -179,8 +175,6 @@ static int parse_options(int argc, char **argv)
 		case 'h': usage(argv[0]); exit(0);                            	    break;
 
 		case 'v': _options.verbose_debug = true;                            break;
-
-		case 'm': _options.transform_imu = true;                            break;
 
 		case 'n': if (nullptr != optarg) _options.ns = std::string(optarg) + "/"; break;
 
@@ -355,9 +349,6 @@ int main(int argc, char **argv)
 
 	// Init timesync
 	topics->set_timesync(std::make_shared<TimeSync>(_options.verbose_debug));
-	if(_options.transform_imu) {
-		topics->set_transform(std::make_shared<Transform_Imu>());
-	}
 
 @[if recv_topics]@
 	topics->init(&t_send_queue_cv, &t_send_queue_mutex, &t_send_queue, _options.ns);

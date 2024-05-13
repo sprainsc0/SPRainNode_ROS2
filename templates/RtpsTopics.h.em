@@ -34,7 +34,6 @@ except AttributeError:
 #include <type_traits>
 
 #include "microRTPS_timesync.h"
-#include "transform_imu.h"
 
 @[for topic in send_topics]@
 #include "@(topic)_Publisher.h"
@@ -66,7 +65,6 @@ public:
 	bool init(std::condition_variable *t_send_queue_cv, std::mutex *t_send_queue_mutex, std::queue<uint8_t> *t_send_queue,
 		  const std::string &ns);
 	void set_timesync(const std::shared_ptr<TimeSync> &timesync) { _timesync = timesync; };
-	void set_transform(const std::shared_ptr<Transform_Imu> &transform) { _transform = transform; };
 @[if send_topics]@
 	template <typename T>
 	void sync_timestamp_of_incoming_data(T &msg);
@@ -188,6 +186,4 @@ private:
 	 *         messages timestamps.
 	 */
 	std::shared_ptr<TimeSync> _timesync;
-
-	std::shared_ptr<Transform_Imu> _transform{nullptr};
 };
