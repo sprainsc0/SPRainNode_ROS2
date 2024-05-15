@@ -262,7 +262,6 @@ timesync_status_msg_t TimeSync::newTimesyncStatusMsg()
 @[else]@
 	setMsgTimestamp(&msg, getSteadyTimeUSec());
 @[end if]@
-	setMsgSourceProtocol(&msg, 1); // SOURCE_PROTOCOL_RTPS
 	setMsgRemoteTimeStamp(&msg, _remote_time_stamp.load() / 1000ULL);
 	setMsgObservedOffset(&msg, _offset_prev.load());
 	setMsgEstimatedOffset(&msg, _offset_ns.load());
