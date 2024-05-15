@@ -24,6 +24,7 @@ class Classifier():
         self.alias_msgs_to_send: List[Tuple[str, str]] = []
         self.alias_msgs_to_receive: List[Tuple[str, str]] = []
         self.msg_list: List[str] = []
+        self.msg_id_list: List[Tuple[str, int]] = []
 
         # Create message map
         self.setup_msg_map()
@@ -47,6 +48,7 @@ class Classifier():
                 else:
                     self.msgs_to_receive.update({topic['msg']: 0})
             self.msg_list.append(topic['msg'])
+            self.msg_id_list.append((topic['msg'], int(topic['id'])))
 
     def set_msg_files_send(self) -> list:
         """

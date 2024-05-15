@@ -15,6 +15,12 @@ from generate_uorb_topic_files import MsgScope # this is in Tools/
 
 send_topics = [(alias[idx] if alias[idx] else s.short_name) for idx, s in enumerate(spec) if scope[idx] == MsgScope.SEND]
 recv_topics = [(alias[idx] if alias[idx] else s.short_name) for idx, s in enumerate(spec) if scope[idx] == MsgScope.RECEIVE]
+
+def get_msg_id(topic_name):
+	for topic in msgs[0]:
+		if topic_name == topic[0]:
+			return topic[1]
+	return 255
 }@
 
 
@@ -28,7 +34,7 @@ bool RtpsTopics::init(std::condition_variable *t_send_queue_cv, std::mutex *t_se
 	std::cout << "\033[0;36m---   Subscribers   ---\033[0m" << std::endl;
 @[for topic in recv_topics]@
 
-	if (_@(topic)_sub.init(@(msgs[0].index(topic) + 1), t_send_queue_cv, t_send_queue_mutex, t_send_queue, ns)) {
+	if (_@(topic)_sub.init(@(get_msg_id(topic)), t_send_queue_cv, t_send_queue_mutex, t_send_queue, ns)) {
 		std::cout << "- @(topic) subscriber started" << std::endl;
 
 	} else {
@@ -95,7 +101,7 @@ void RtpsTopics::publish(const uint8_t topic_ID, char data_buffer[], size_t len)
 	switch (topic_ID) {
 @[for topic in send_topics]@
 
-	case @(msgs[0].index(topic) + 1): { // @(topic) publisher
+	case @(get_msg_id(topic)): { // @(topic) publisher
 		@(topic)_msg_t st;
 		eprosima::fastcdr::FastBuffer cdrbuffer(data_buffer, len);
 		eprosima::fastcdr::Cdr cdr_des(cdrbuffer);
@@ -145,7 +151,7 @@ bool RtpsTopics::getMsg(const uint8_t topic_ID, eprosima::fastcdr::Cdr &scdr)
 	switch (topic_ID) {
 @[for topic in recv_topics]@
 
-	case @(msgs[0].index(topic) + 1): // @(topic) subscriber
+	case @(get_msg_id(topic)): // @(topic) subscriber
 		if (_@(topic)_sub.hasMsg()) {
 			@(topic)_msg_t msg = _@(topic)_sub.getMsg();
 

@@ -306,7 +306,7 @@ def generate_agent(out_dir):
     generate_uorb_topic_files.generate_uRTPS_general(classifier.msgs_to_send, classifier.alias_msgs_to_send, classifier.msgs_to_receive, classifier.alias_msgs_to_receive, msg_dir, out_dir,
                                                         urtps_templates_dir, package, generate_uorb_topic_files.INCL_DEFAULT, classifier.msg_list, fastrtps_version, ros2_distro, uRTPS_AGENT_TOPICS_H_TEMPL_FILE)
     generate_uorb_topic_files.generate_uRTPS_general(classifier.msgs_to_send, classifier.alias_msgs_to_send, classifier.msgs_to_receive, classifier.alias_msgs_to_receive, msg_dir, out_dir,
-                                                        urtps_templates_dir, package, generate_uorb_topic_files.INCL_DEFAULT, classifier.msg_list, fastrtps_version, ros2_distro, uRTPS_AGENT_TOPICS_SRC_TEMPL_FILE)
+                                                        urtps_templates_dir, package, generate_uorb_topic_files.INCL_DEFAULT, classifier.msg_id_list, fastrtps_version, ros2_distro, uRTPS_AGENT_TOPICS_SRC_TEMPL_FILE)
     if cmakelists:
         generate_uorb_topic_files.generate_uRTPS_general(classifier.msgs_to_send, classifier.alias_msgs_to_send, classifier.msgs_to_receive, classifier.alias_msgs_to_receive, msg_dir, os.path.dirname(out_dir),
                                                             urtps_templates_dir, package, generate_uorb_topic_files.INCL_DEFAULT, classifier.msg_list, fastrtps_version, ros2_distro, uRTPS_AGENT_CMAKELISTS_TEMPL_FILE)
