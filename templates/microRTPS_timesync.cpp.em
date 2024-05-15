@@ -81,7 +81,7 @@ void TimeSync::init_status_pub(TimesyncStatusPublisher *status_pub)
 
 			status_pub->publish(&status_msg);
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
 	};
 	_request_stop = false;
