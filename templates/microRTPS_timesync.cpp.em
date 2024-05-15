@@ -263,8 +263,8 @@ timesync_status_msg_t TimeSync::newTimesyncStatusMsg()
 	setMsgTimestamp(&msg, getSteadyTimeUSec());
 @[end if]@
 	setMsgRemoteTimeStamp(&msg, _remote_time_stamp.load() / 1000ULL);
-	setMsgObservedOffset(&msg, _offset_prev.load());
-	setMsgEstimatedOffset(&msg, _offset_ns.load());
+	setMsgObservedOffset(&msg, _offset_prev.load() / 1000ULL);
+	setMsgEstimatedOffset(&msg, _offset_ns.load() / 1000ULL);
 	setMsgRoundTripTime(&msg, _rtti.load() / 1000ll);
 
 	return msg;
