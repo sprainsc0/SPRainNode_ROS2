@@ -36,7 +36,6 @@ bool RtpsTopics::init(std::condition_variable *t_send_queue_cv, std::mutex *t_se
 
 	if (_@(topic)_sub.init(@(get_msg_id(topic)), t_send_queue_cv, t_send_queue_mutex, t_send_queue, ns)) {
 		std::cout << "- @(topic) subscriber started" << std::endl;
-
 	} else {
 		std::cerr << "Failed starting @(topic) subscriber" << std::endl;
 		return false;
@@ -58,9 +57,11 @@ bool RtpsTopics::init(std::condition_variable *t_send_queue_cv, std::mutex *t_se
 			std::cout << "- @(topic) publishers started" << std::endl;
 		}
 @[    elif topic == 'TimesyncStatus' or topic == 'timesync_status']@
-	if (_@(topic)_pub.init(ns, std::string("fmu/timesync_status/in"))) {
-		_timesync->init_status_pub(&_@(topic)_pub);
-		std::cout << "- @(topic) publisher started" << std::endl;
+	if (_@(topic)_pub.init(ns, std::string("TimesyncStatus"))) {
+		if (_@(topic)_fmu_in_pub.init(ns, std::string("fmu/timesync_status/in"))) {
+			_timesync->init_status_pub(&_@(topic)_fmu_in_pub);
+			std::cout << "- @(topic) publisher started" << std::endl;
+		}
 @[    elif topic == 'SensorImu' or topic == 'sensor_imu']@
 	if (_@(topic)_pub.init(ns)) {
 		if(_transform != nullptr) {
@@ -100,7 +101,7 @@ void RtpsTopics::publish(const uint8_t topic_ID, char data_buffer[], size_t len)
 {
 	switch (topic_ID) {
 @[for topic in send_topics]@
-
+@[    if topic != 'TimesyncStatus' and topic != 'timesync_status']@
 	case @(get_msg_id(topic)): { // @(topic) publisher
 		@(topic)_msg_t st;
 		eprosima::fastcdr::FastBuffer cdrbuffer(data_buffer, len);
@@ -108,7 +109,7 @@ void RtpsTopics::publish(const uint8_t topic_ID, char data_buffer[], size_t len)
 		st.deserialize(cdr_des);
 @[    if topic == 'Timesync' or topic == 'timesync']@
 		_timesync->processTimesyncMsg(&st, &_@(topic)_pub);
-@[    end if]@
+@[    else]@
 
 		// apply timestamp offset
 		sync_timestamp_of_incoming_data(st);
@@ -122,8 +123,10 @@ void RtpsTopics::publish(const uint8_t topic_ID, char data_buffer[], size_t len)
 @[    else]@
 		_@(topic)_pub.publish(&st);
 @[    end if]@
+@[    end if]@
 	}
 	break;
+@[    end if]@
 @[end for]@
 
 	default:
@@ -154,10 +157,10 @@ bool RtpsTopics::getMsg(const uint8_t topic_ID, eprosima::fastcdr::Cdr &scdr)
 	case @(get_msg_id(topic)): // @(topic) subscriber
 		if (_@(topic)_sub.hasMsg()) {
 			@(topic)_msg_t msg = _@(topic)_sub.getMsg();
-
+@[    	if topic != 'Timesync' and topic != 'timesync']@
 			// apply timestamp offset
 			sync_timestamp_of_outgoing_data(msg);
-
+@[    	end if]@
 			msg.serialize(scdr);
 			ret = true;
 

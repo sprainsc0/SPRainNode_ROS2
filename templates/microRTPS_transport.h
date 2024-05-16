@@ -7,7 +7,7 @@
 #include <poll.h>
 #include <termios.h>
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 4096
 #define DEFAULT_UART "/dev/ttyACM0"
 
 namespace MicroRtps {

@@ -264,10 +264,12 @@ private:
 	inline void setMsgObservedOffset(timesync_status_msg_t *msg, const int64_t &observed_offset) { msg->observed_offset_() = observed_offset; }
 	inline void setMsgEstimatedOffset(timesync_status_msg_t *msg, const int64_t &estimated_offset) { msg->estimated_offset_() = estimated_offset; }
 	inline void setMsgRoundTripTime(timesync_status_msg_t *msg, const uint32_t &round_trip_time) { msg->round_trip_time_() = round_trip_time; }
+	inline void setMsgConverged(timesync_status_msg_t *msg, const bool &converged) { msg->converged_() = converged; }
 @[elif ros2_distro]@
 	inline void setMsgRemoteTimeStamp(timesync_status_msg_t *msg, const uint64_t &remote_timestamp) { msg->remote_timestamp() = remote_timestamp; }
 	inline void setMsgObservedOffset(timesync_status_msg_t *msg, const int64_t &observed_offset) { msg->observed_offset() = observed_offset; }
 	inline void setMsgEstimatedOffset(timesync_status_msg_t *msg, const int64_t &estimated_offset) { msg->estimated_offset() = estimated_offset; }
 	inline void setMsgRoundTripTime(timesync_status_msg_t *msg, const uint32_t &round_trip_time) { msg->round_trip_time() = round_trip_time; }
+	inline void setMsgConverged(timesync_status_msg_t *msg, const bool &converged) { msg->converged() = converged; }
 @[end if]@
 };

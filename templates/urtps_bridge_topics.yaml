@@ -2,42 +2,41 @@
 # Topics ID is come from flight control TopicsCommon.hpp file
 rtps:
   - msg: Timesync
-    id: 53
+    id: 55
     receive: true
     send: true
   - msg: SensorDelta
-    id: 40
+    id: 41
     send: true
   - msg: SensorImu
-    id: 45
+    id: 46
     send: true
   - msg: SensorVio
-    id: 48
+    id: 49
     receive: true
   - msg: TimesyncStatus
-    id: 56
-    receive: true
+    id: 59
     send: true
   - msg: GpsPretreat
     id: 17
     send: true
   - msg: SensorMag
-    id: 46
+    id: 47
     send: true
   - msg: VehicleAttitude
-    id: 61
+    id: 65
     send: true
   - msg: LocalPosition
     id: 21
     send: true
   - msg: VehicleCommand
-    id: 62
+    id: 66
     receive: true
   - msg: ActuatorArmed
     id: 0
     send: true
   - msg: VehicleCommandAck
-    id: 63
+    id: 67
     send: true
   - msg: HomePosition
     id: 18

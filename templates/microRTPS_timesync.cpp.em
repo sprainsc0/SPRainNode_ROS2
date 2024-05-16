@@ -81,7 +81,7 @@ void TimeSync::init_status_pub(TimesyncStatusPublisher *status_pub)
 
 			status_pub->publish(&status_msg);
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 		}
 	};
 	_request_stop = false;
@@ -266,6 +266,7 @@ timesync_status_msg_t TimeSync::newTimesyncStatusMsg()
 	setMsgObservedOffset(&msg, _offset_prev.load() / 1000ULL);
 	setMsgEstimatedOffset(&msg, _offset_ns.load() / 1000ULL);
 	setMsgRoundTripTime(&msg, _rtti.load() / 1000ll);
+	setMsgConverged(&msg, _convergent);
 
 	return msg;
 }
