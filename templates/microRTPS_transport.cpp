@@ -684,7 +684,6 @@ ssize_t UDP_node::node_write(void *buffer, size_t len)
 	return ret;
 }
 
-
 PIPE_node::PIPE_node(const char *pipe_ros, const char *pipe_fcu, const uint32_t poll_ms,
 		 const uint8_t sys_id, const bool debug):
 	Transport_node(sys_id, debug),
@@ -733,7 +732,7 @@ int PIPE_node::init()
 		return -errno;
 	}
 
-	_to_ros_fd = open(_pipe_ros_name, O_RDONLY | O_NONBLOCK);
+	_to_ros_fd = open(_pipe_ros_name, O_RDONLY);
 	if (_to_ros_fd < 0) {
 
 		printf("\033[0;31m[ micrortps_transport ]\tPIPE transport: Failed to open pipe: %s (%d)\033[0m\n", _pipe_ros_name, errno);
@@ -782,7 +781,7 @@ ssize_t PIPE_node::node_read(void *buffer, size_t len)
 	ssize_t ret = 0;
 	int r = poll(_poll_fd, 1, _poll_ms);
 
-	if (r == 1 && (_poll_fd[0].revents & POLLIN)) {
+	if (r > 0 && (_poll_fd[0].revents & POLLIN)) {
 		ret = ::read(_to_ros_fd, buffer, len);
 	}
 

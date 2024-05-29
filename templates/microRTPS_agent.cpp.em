@@ -76,7 +76,7 @@ struct options {
 		UDP,
 		PIPE
 	};
-	eTransports transport = options::eTransports::PIPE;
+	eTransports transport = options::eTransports::UDP;
 	char pipe_ros[64] = PIPE_ROS;
 	char pipe_fcu[64] = PIPE_FCU;
 	char device[64] = DEVICE;

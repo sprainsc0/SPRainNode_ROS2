@@ -16,6 +16,7 @@ rtps:
     receive: true
   - msg: TimesyncStatus
     id: 59
+    receive: true
     send: true
   - msg: GpsPretreat
     id: 17
