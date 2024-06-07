@@ -5,9 +5,9 @@ rtps:
     id: 55
     receive: true
     send: true
-  - msg: SensorDelta
-    id: 41
-    send: true
+  # - msg: SensorDelta
+  #   id: 41
+  #   send: true
   - msg: SensorImu
     id: 46
     send: true
@@ -18,28 +18,28 @@ rtps:
     id: 59
     receive: true
     send: true
-  - msg: GpsPretreat
-    id: 17
-    send: true
-  - msg: SensorMag
-    id: 47
-    send: true
+  # - msg: GpsPretreat
+  #   id: 17
+  #   send: true
+  # - msg: SensorMag
+  #   id: 47
+  #   send: true
   - msg: VehicleAttitude
     id: 65
     send: true
   - msg: LocalPosition
     id: 21
     send: true
-  - msg: VehicleCommand
-    id: 66
-    receive: true
-  - msg: ActuatorArmed
-    id: 0
-    send: true
-  - msg: VehicleCommandAck
-    id: 67
-    send: true
-  - msg: HomePosition
-    id: 18
-    send: true
+  # - msg: VehicleCommand
+  #   id: 66
+  #   receive: true
+  # - msg: ActuatorArmed
+  #   id: 0
+  #   send: true
+  # - msg: VehicleCommandAck
+  #   id: 67
+  #   send: true
+  # - msg: HomePosition
+  #   id: 18
+  #   send: true
   
